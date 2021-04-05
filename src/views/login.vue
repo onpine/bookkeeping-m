@@ -38,7 +38,9 @@
 </template>
 
 <script>
+import { Toast } from "vant";
 import { login } from "@/api/user";
+import { setItem } from "@/utils/stroage.ts";
 export default {
   name: "loginContainer",
   components: {},
@@ -55,10 +57,15 @@ export default {
   mounted() {},
   methods: {
     async onSubmit(values) {
+      const toast = Toast.loading({
+        message: "加载中...",
+        forbidClick: true,
+      });
       try {
-        console.log("submit", values);
         let result = await login(values);
         console.log(result);
+        setItem("token", result.data.token);
+        toast.clear();
       } catch (error) {
         console.log(error);
       }

@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Login from '@/views/login.vue'
-import Rigister from '@/views/rigister.vue'
+import Register from '@/views/register.vue'
+import Home from '@/views/home.vue'
+import Note from '@/views/note.vue'
+import Setting from '@/views/setting.vue'
+import About from '@/views/about.vue'
+import Records from '@/views/records.vue'
 
 Vue.use(VueRouter)
 
@@ -9,7 +14,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: 'home',
-    redirect: '/login'
+    component: Home
   },
   {
     path: "/login",
@@ -17,9 +22,29 @@ const routes: Array<RouteConfig> = [
     component: Login
   },
   {
-    path: '/rigister',
-    name: 'rigister',
-    component: Rigister
+    path: '/register',
+    name: 'register',
+    component: Register
+  },
+  {
+    path: '/note',
+    name: 'note',
+    component: Note
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component: Setting
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
+  },
+  {
+    path: '/records',
+    name: 'records',
+    component: Records
   }
 ]
 
