@@ -5,105 +5,95 @@
       :value="value"
       clearable
       clickable
-      label="文本"
-      left-icon="music-o"
+      label="金额"
       right-icon="gold-coin-o"
       placeholder="显示清除图标"
       @touchstart.native.stop="show = true"
+      @clear="handleClear"
+      @focus="handleFocus"
+      @blur="handleBlur"
     />
     <van-grid :column-num="5">
       <van-grid-item
+        :class="index === selected ? 'bchigh' : ''"
         v-for="(item, index) in inCategory"
         :key="index"
-        :icon="item.icon"
         :text="item.name"
+        @click.native="handleChangeCate(index)"
+      >
+        <template #icon>
+          <van-icon
+            class-prefix="icon"
+            :class="index === selected ? 'high' : ''"
+            :name="item.icon"
+          ></van-icon>
+        </template>
+      </van-grid-item>
+      <van-grid-item
+        @click.native="handleChangeCate(-1)"
+        icon="setting"
+        text="设置"
       />
-      <van-grid-item icon="setting-o" text="设置" />
     </van-grid>
+    <van-field
+      v-model="message"
+      rows="2"
+      autosize
+      label="备注"
+      type="textarea"
+      maxlength="50"
+      placeholder="备注"
+      show-word-limit
+    />
     <van-number-keyboard
-      v-model="value"
       :show="inshow"
-      extra-key="."
-      :maxlength="6"
+      v-model="value"
+      theme="custom"
+      :extra-key="['-', '.']"
+      close-button-text="完成"
       @blur="show = false"
     />
   </div>
 </template>
 
 <script>
+import { inCategory } from "@/utils/Category.json";
 export default {
   name: "inCategoryContainer",
   components: {},
   props: {},
   data() {
     return {
-      inshow: true,
+      inCategory: inCategory,
+      inshow: false,
       value: "",
-      inCategory: [
-        {
-          icon: "photo-o",
-          name: "其他",
-        },
-        {
-          icon: "photo-o",
-          name: "餐饮",
-        },
-        {
-          icon: "photo-o",
-          name: "交通",
-        },
-        {
-          icon: "photo-o",
-          name: "购物",
-        },
-        {
-          icon: "photo-o",
-          name: "服饰",
-        },
-        {
-          icon: "photo-o",
-          name: "日用品",
-        },
-        {
-          icon: "photo-o",
-          name: "娱乐",
-        },
-        {
-          icon: "photo-o",
-          name: "烟酒茶",
-        },
-        {
-          icon: "photo-o",
-          name: "学习",
-        },
-        {
-          icon: "photo-o",
-          name: "医疗",
-        },
-        {
-          icon: "photo-o",
-          name: "住房",
-        },
-        {
-          icon: "photo-o",
-          name: "水电煤",
-        },
-        {
-          icon: "photo-o",
-          name: "通讯",
-        },
-        {
-          icon: "photo-o",
-          name: "人情往来",
-        },
-      ],
+      message: "",
+      selected: 0,
     };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.$emit("change");
+  },
+  methods: {
+    handleClear() {
+      this.value = "";
+    },
+    handleChangeCate(index) {
+      if (index === -1) {
+        this.$router.push({ path: "/setting" });
+      }
+      this.selected = index;
+    },
+    handleFocus() {
+      this.inshow = true;
+    },
+    handleBlur() {
+      this.inshow = false;
+    },
+  },
 };
 </script>
 
@@ -111,4 +101,10 @@ export default {
 // .inCategory-container {
 //   // height: calc(100% - 54px);
 // }
+.high {
+  color: indianred;
+}
+/deep/.bchigh > .van-grid-item__content {
+  background-color: #ccc;
+}
 </style>

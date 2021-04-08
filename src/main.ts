@@ -5,6 +5,7 @@ import store from './store'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import 'amfe-flexible';
+import "./assets/css/iconfont.css"
 
 Vue.config.productionTip = false
 

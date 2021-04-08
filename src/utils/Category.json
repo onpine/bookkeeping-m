@@ -1,0 +1,58 @@
+{
+  "inCategory": [
+    {
+      "icon": "31chiping",
+      "name": "其他"
+    },
+    {
+      "icon": "chifan2600",
+      "name": "餐饮"
+    },
+    {
+      "icon": "gouwujianying",
+      "name": "购物"
+    },
+    {
+      "icon": "chuzu",
+      "name": "交通"
+    },
+    {
+      "icon": "fushi",
+      "name": "服饰"
+    },
+    {
+      "icon": "jiaoyu",
+      "name": "教育"
+    },
+    {
+      "icon": "yiliao",
+      "name": "医疗"
+    },
+    {
+      "icon": "tongxun",
+      "name": "通讯"
+    },
+    {
+      "icon": "liwu",
+      "name": "礼物"
+    }
+  ],
+  "payCategory": [
+    {
+      "icon": "31chiping",
+      "name": "其他"
+    },
+    {
+      "icon": "xinzi",
+      "name": "薪资"
+    },
+    {
+      "icon": "touzi",
+      "name": "投资"
+    },
+    {
+      "icon": "liwu",
+      "name": "赠送"
+    }
+  ]
+}

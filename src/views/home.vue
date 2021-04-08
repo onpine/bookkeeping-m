@@ -57,7 +57,7 @@
         icon="points"
       ></van-button>
     </div>
-    <van-action-sheet v-model="show" title="标题">
+    <van-action-sheet v-model="show" title="导航">
       <div class="sheet">
         <van-grid clickable :column-num="3">
           <van-grid-item icon="info-o" text="关于" to="/about" />
@@ -129,8 +129,6 @@ export default {
     position: fixed;
     bottom: 20px;
     right: 20px;
-  }
-  .today {
   }
 }
 /deep/.van-cell-group {
