@@ -41,8 +41,9 @@
         </div>
       </van-cell>
     </van-cell-group>
-    <div class="today">
-      <record />
+    <!-- 今日记录的账目 -->
+    <div class="today" style="padding-bottom: 80px">
+      <record v-for="(item, index) in noteList" :key="index" :item="item" />
     </div>
     <div class="write-btn">
       <van-button to="/note" round type="primary" icon="edit"
@@ -57,6 +58,7 @@
         icon="points"
       ></van-button>
     </div>
+    <!-- 导航 -->
     <van-action-sheet v-model="show" title="导航">
       <div class="sheet">
         <van-grid clickable :column-num="3">
@@ -71,6 +73,7 @@
 </template>
 
 <script>
+import { getItem } from "@/utils/stroage.ts";
 import Record from "@/components/record.vue";
 export default {
   name: "homeContainer",
@@ -79,12 +82,16 @@ export default {
   data() {
     return {
       show: false,
+      noteList: [],
     };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    this.noteList = [...getItem("noteList")];
+    console.log(this.noteList);
+  },
   methods: {},
 };
 </script>
@@ -92,7 +99,7 @@ export default {
 <style scoped lang='less'>
 .home-container {
   background-color: #eee;
-  height: 100vh;
+  min-height: 100vh;
 
   .this-title {
     font-size: 13px;

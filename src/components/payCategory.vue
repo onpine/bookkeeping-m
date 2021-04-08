@@ -1,9 +1,11 @@
 <template>
   <div class="payCategory-container">
+    <!-- <van-field readonly clickable /> -->
     <van-field
-      :value="value"
+      :value="amount"
       clearable
       clickable
+      readonly
       label="金额"
       right-icon="gold-coin-o"
       placeholder="显示清除图标"
@@ -25,14 +27,16 @@
             class-prefix="icon"
             :class="index === selected ? 'high' : ''"
             :name="item.icon"
-          ></van-icon> </template
-      ></van-grid-item>
+          ></van-icon>
+        </template>
+      </van-grid-item>
       <van-grid-item
         @click.native="handleChangeCate(-1)"
         icon="setting"
         text="设置"
       />
     </van-grid>
+
     <van-row>
       <van-col :span="12">
         <van-button type="default" @click="textShow = true">{{
@@ -47,11 +51,12 @@
     </van-row>
     <van-number-keyboard
       :show="payshow"
-      v-model="value"
+      v-model="amount"
       theme="custom"
       :extra-key="['-', '.']"
       close-button-text="完成"
       @blur="show = false"
+      @close="handleSubmit"
     />
     <van-popup
       v-model="textShow"
@@ -101,6 +106,7 @@
 <script>
 import { payCategory } from "@/utils/Category.json";
 import { getFormat1 } from "@/utils/time.ts";
+import { getItem, setItem } from "@/utils/stroage.ts";
 export default {
   name: "payCategoryContainer",
   components: {},
@@ -109,12 +115,11 @@ export default {
     return {
       payCategory: payCategory,
       payshow: true,
-      value: "",
+      amount: "",
       message: "",
       message2: "",
-      selected: 0,
       time: getFormat1(new Date()),
-      currentDate: new Date(),
+      selected: 0,
       textShow: false,
       timeShow: false,
       minDate: new Date(2020, 0, 1),
@@ -125,7 +130,9 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    this.$emit("change");
+  },
   methods: {
     handleClear() {
       this.value = "";
@@ -140,7 +147,24 @@ export default {
       this.payshow = true;
     },
     handleBlur() {
-      this.payshow = false;
+      // this.payshow = false;
+    },
+    handleSubmit() {
+      let noteList = getItem("noteList") || [];
+      console.log(noteList);
+      if (this.amount == "") {
+        alert("输入金额");
+        return;
+      }
+      noteList.push({
+        type: 0,
+        amount: this.amount,
+        category: this.selected,
+        message: this.message,
+        time: this.time,
+      });
+      setItem("noteList", noteList);
+      this.$router.push({ path: "/" });
     },
     handleOk() {
       this.message = this.message2;
@@ -159,9 +183,9 @@ export default {
 </script>
 
 <style scoped lang='less'>
-.payCategory-container {
-  height: calc(100% - 54px);
-}
+// .payCategory-container {
+//   // height: calc(100% - 54px);
+// }
 .high {
   color: indianred;
 }

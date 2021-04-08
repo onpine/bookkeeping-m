@@ -1,17 +1,33 @@
 <template>
   <div class="record-container">
     <van-swipe-cell class="cord-cell">
-      <van-row class="cord-row">
-        <van-col span="3"><van-icon name="phone-circle" /></van-col>
-        <van-col span="5" offset=""
-          ><span class="type-name">餐饮</span></van-col
-        >
-        <van-col span="8" offset="8"
-          ><div class="num-wrap">
-            <strong>￥6.00</strong><span>04月01日</span>
-          </div></van-col
-        >
-      </van-row>
+      <div>
+        <van-row class="cord-row">
+          <van-col span="3">
+            <van-icon
+              class-prefix="icon"
+              :color="item.type ? '#41b883' : 'indianred'"
+              :name="
+                item.type
+                  ? inCategory[item.category].icon
+                  : payCategory[item.category].icon
+              "
+            ></van-icon>
+          </van-col>
+          <van-col span="5" offset=""
+            ><span class="type-name">{{
+              item.type
+                ? inCategory[item.category].name
+                : payCategory[item.category].name
+            }}</span></van-col
+          >
+          <van-col span="16" offset=""
+            ><div class="num-wrap">
+              <strong>{{ item.amount }}￥</strong><span>{{ item.time }}</span>
+            </div></van-col
+          >
+        </van-row>
+      </div>
       <template #right>
         <van-button square type="danger" text="删除" />
         <van-button square type="primary" text="编辑" />
@@ -21,12 +37,18 @@
 </template>
 
 <script>
+import { inCategory, payCategory } from "@/utils/Category.json";
 export default {
   name: "recordContainer",
   components: {},
-  props: {},
+  props: {
+    item: Object,
+  },
   data() {
-    return {};
+    return {
+      inCategory,
+      payCategory,
+    };
   },
   computed: {},
   watch: {},
@@ -54,12 +76,11 @@ export default {
     /deep/.van-col {
       height: 65px;
       padding: 10px 0;
-      .van-icon {
+      .icon {
         line-height: 45px;
         width: 100%;
         // text-align: center;
-        font-size: 35px;
-        color: indianred;
+        font-size: 30px;
       }
       .type-name {
         display: block;

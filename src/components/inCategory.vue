@@ -1,10 +1,10 @@
 <template>
   <div class="inCategory-container">
-    <!-- <van-field readonly clickable /> -->
     <van-field
-      :value="value"
+      :value="amount"
       clearable
       clickable
+      readonly
       label="金额"
       right-icon="gold-coin-o"
       placeholder="显示清除图标"
@@ -26,16 +26,14 @@
             class-prefix="icon"
             :class="index === selected ? 'high' : ''"
             :name="item.icon"
-          ></van-icon>
-        </template>
-      </van-grid-item>
+          ></van-icon> </template
+      ></van-grid-item>
       <van-grid-item
         @click.native="handleChangeCate(-1)"
         icon="setting"
         text="设置"
       />
     </van-grid>
-
     <van-row>
       <van-col :span="12">
         <van-button type="default" @click="textShow = true">{{
@@ -50,11 +48,12 @@
     </van-row>
     <van-number-keyboard
       :show="inshow"
-      v-model="value"
+      v-model="amount"
       theme="custom"
       :extra-key="['-', '.']"
       close-button-text="完成"
       @blur="show = false"
+      @close="handleSubmit"
     />
     <van-popup
       v-model="textShow"
@@ -104,6 +103,7 @@
 <script>
 import { inCategory } from "@/utils/Category.json";
 import { getFormat1 } from "@/utils/time.ts";
+import { getItem, setItem } from "@/utils/stroage.ts";
 export default {
   name: "inCategoryContainer",
   components: {},
@@ -112,11 +112,12 @@ export default {
     return {
       inCategory: inCategory,
       inshow: true,
-      value: "",
+      amount: "",
       message: "",
       message2: "",
-      time: getFormat1(new Date()),
       selected: 0,
+      time: getFormat1(new Date()),
+      currentDate: new Date(),
       textShow: false,
       timeShow: false,
       minDate: new Date(2020, 0, 1),
@@ -127,9 +128,7 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {
-    this.$emit("change");
-  },
+  mounted() {},
   methods: {
     handleClear() {
       this.value = "";
@@ -144,7 +143,20 @@ export default {
       this.inshow = true;
     },
     handleBlur() {
-      this.inshow = false;
+      // this.inshow = false;
+    },
+    handleSubmit() {
+      let noteList = getItem("noteList") || [];
+      console.log(noteList);
+      noteList.push({
+        type: 1,
+        amount: this.amount,
+        category: this.selected,
+        message: this.message,
+        time: this.time,
+      });
+      setItem("noteList", noteList);
+      this.$router.push({ path: "/" });
     },
     handleOk() {
       this.message = this.message2;
@@ -163,9 +175,9 @@ export default {
 </script>
 
 <style scoped lang='less'>
-// .inCategory-container {
-//   // height: calc(100% - 54px);
-// }
+.inCategory-container {
+  height: calc(100% - 54px);
+}
 .high {
   color: indianred;
 }

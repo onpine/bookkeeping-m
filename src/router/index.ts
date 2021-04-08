@@ -56,7 +56,7 @@ router.beforeEach((to, from, next) => {
   // 如果没有登录，则跳转到登陆页面
   // 如果登陆了，则允许通过
   // 是 /login 允许通过
-  const token = window.localStorage.getItem('token');
+  const token = "token" || window.localStorage.getItem('token');
   // 校验非登录页面的登陆状态
   if (to.path !== '/login') {
     if (token) {

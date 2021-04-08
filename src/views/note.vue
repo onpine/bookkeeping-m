@@ -2,11 +2,11 @@
   <div class="note-container">
     <van-tabs v-model="active" swipeable>
       <van-button to="/" icon="arrow-left" class="nav-btn"></van-button>
-      <van-tab title="收入">
-        <in-category />
-      </van-tab>
       <van-tab title="支出">
         <pay-category />
+      </van-tab>
+      <van-tab title="收入">
+        <in-category />
       </van-tab>
     </van-tabs>
   </div>
