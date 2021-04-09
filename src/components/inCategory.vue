@@ -104,6 +104,7 @@
 import { inCategory } from "@/utils/Category.json";
 import { getFormat1 } from "@/utils/time.ts";
 import { getItem, setItem } from "@/utils/stroage.ts";
+import { isMonth, isToday } from "@/utils/time.ts";
 export default {
   name: "inCategoryContainer",
   components: {},
@@ -147,6 +148,7 @@ export default {
     },
     handleSubmit() {
       let noteList = getItem("noteList") || [];
+      let monthList = getItem("monthList") || [];
       console.log(noteList);
       noteList.push({
         type: 1,
@@ -156,6 +158,33 @@ export default {
         time: this.time,
       });
       setItem("noteList", noteList);
+
+      let monthTotal = {
+        payTotal: 0,
+        inTotal: 0,
+        budget: 0,
+      };
+      let todayTotal = {
+        payTotal: 0,
+        inTotal: 0,
+      };
+      noteList.forEach((element) => {
+        if (isMonth(element.time)) {
+          if (element.type) {
+            monthTotal.inTotal += parseInt(element.amount);
+            if (isToday(element.time)) {
+              todayTotal.inTotal += parseInt(element.amount);
+            }
+          } else {
+            monthTotal.payTotal += parseInt(element.amount);
+            if (isToday(element.time)) {
+              todayTotal.payTotal += parseInt(element.amount);
+            }
+          }
+        }
+      });
+      setItem("monthTotal", monthTotal);
+      setItem("todayTotal", todayTotal);
       this.$router.push({ path: "/" });
     },
     handleOk() {

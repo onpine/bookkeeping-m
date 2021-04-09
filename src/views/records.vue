@@ -24,24 +24,30 @@
           ></van-col
         >
       </van-row>
-      <record />
+      <record v-for="(item, index) in noteList" :key="index" :item="item" />
     </div>
   </div>
 </template>
 
 <script>
+import { getItem } from "@/utils/stroage.ts";
 import Record from "@/components/record.vue";
 export default {
   name: "recordsContainer",
   components: { Record },
   props: {},
   data() {
-    return {};
+    return {
+      noteList: [],
+    };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+    this.noteList = [...getItem("noteList")];
+    console.log(this.noteList);
+  },
   methods: {
     onClickLeft() {
       this.$router.push({ path: "/" });
@@ -60,7 +66,7 @@ export default {
 }
 .records-container {
   background-color: #eee;
-  height: 100vh;
+  min-height: 100vh;
   .nav-wrap {
     margin-bottom: 10px;
   }

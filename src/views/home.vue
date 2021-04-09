@@ -10,17 +10,40 @@
         <span slot="title" class="this-title">本月支出</span>
       </van-cell>
       <van-cell>
-        <span slot="title" class="this-value">暂无支出</span>
-        <van-icon slot="right-icon" name="eye" class="eye" />
+        <span slot="title" class="this-value">{{
+          eye
+            ? monthTotal.payTotal
+              ? "￥" + monthTotal.payTotal
+              : "暂无支出"
+            : "****"
+        }}</span>
+        <van-icon
+          slot="right-icon"
+          :name="eye ? 'eye' : 'closed-eye'"
+          class="eye"
+          @click="eye = !eye"
+        />
       </van-cell>
       <van-cell>
         <div slot="title">
           <span class="this-title">本月收入</span>
-          <span class="this-value2">暂无</span>
+          <span class="this-value2">{{
+            eye
+              ? monthTotal.inTotal
+                ? "￥" + monthTotal.inTotal
+                : "暂无收入"
+              : "****"
+          }}</span>
         </div>
         <div slot="default" class="left-value">
           <span class="this-title">预算剩余</span>
-          <span class="this-value2">未设置预算</span>
+          <span class="this-value2">{{
+            eye
+              ? monthTotal.budget
+                ? "￥" + monthTotal.budget
+                : "未设置预算"
+              : "****"
+          }}</span>
         </div>
       </van-cell>
       <van-cell>
@@ -33,11 +56,15 @@
       <van-cell>
         <div slot="title">
           <span class="this-title">今日支出</span>
-          <span class="this-value2">暂无</span>
+          <span class="this-value2">{{
+            todayTotal.payTotal ? "￥" + todayTotal.payTotal : "暂无"
+          }}</span>
         </div>
         <div slot="default" class="left-value">
           <span class="this-title">今日收入</span>
-          <span class="this-value2">暂无</span>
+          <span class="this-value2">{{
+            todayTotal.inTotal ? "￥" + todayTotal.inTotal : "暂无"
+          }}</span>
         </div>
       </van-cell>
     </van-cell-group>
@@ -74,6 +101,7 @@
 
 <script>
 import { getItem } from "@/utils/stroage.ts";
+import { isToday } from "@/utils/time.ts";
 import Record from "@/components/record.vue";
 export default {
   name: "homeContainer",
@@ -82,14 +110,42 @@ export default {
   data() {
     return {
       show: false,
+      eye: false,
       noteList: [],
+      monthTotal: {
+        payTotal: 0,
+        inTotal: 0,
+        budget: 0,
+      },
+      todayTotal: {
+        payTotal: 0,
+        inTotal: 0,
+      },
     };
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {
-    this.noteList = [...getItem("noteList")];
+    let getList = [...getItem("noteList")];
+    this.noteList = getList.filter((item) => {
+      return isToday(item.time);
+    });
+
+    this.monthTotal = {
+      ...(getItem("monthTotal") || {
+        payTotal: 0,
+        inTotal: 0,
+        budget: 0,
+      }),
+    };
+    this.todayTotal = {
+      ...(getItem("todayTotal") || {
+        payTotal: 0,
+        inTotal: 0,
+      }),
+    };
+
     console.log(this.noteList);
   },
   methods: {},
