@@ -21,7 +21,7 @@
           slot="right-icon"
           :name="eye ? 'eye' : 'closed-eye'"
           class="eye"
-          @click="eye = !eye"
+          @click="setEyeState(!eye)"
         />
       </van-cell>
       <van-cell>
@@ -37,10 +37,10 @@
         </div>
         <div slot="default" class="left-value">
           <span class="this-title">预算剩余</span>
-          <span class="this-value2">{{
+          <span class="this-value2" @click="eye ? (numberShow = true) : null">{{
             eye
               ? monthTotal.budget
-                ? "￥" + monthTotal.budget
+                ? "￥" + (monthTotal.budget - monthTotal.payTotal)
                 : "未设置预算"
               : "****"
           }}</span>
@@ -68,6 +68,33 @@
         </div>
       </van-cell>
     </van-cell-group>
+    <!-- 设置预算 -->
+    <van-popup
+      v-model="numberShow"
+      round
+      :style="{ width: '90%', padding: '5%' }"
+    >
+      <span class="textLabel">填写预算：</span>
+      <van-field
+        v-model="budget"
+        rows="2"
+        size="large"
+        border
+        type="number"
+        placeholder="预算"
+        show-word-limit
+      />
+      <van-row>
+        <van-col span="10" offset="1">
+          <van-button round plain type="primary" @click="numberShow = false"
+            >取消</van-button
+          >
+        </van-col>
+        <van-col span="10" offset="2"
+          ><van-button round type="primary" @click="handleOk">确认</van-button>
+        </van-col>
+      </van-row>
+    </van-popup>
     <!-- 今日记录的账目 -->
     <div class="today" style="padding-bottom: 80px">
       <record v-for="(item, index) in noteList" :key="index" :item="item" />
@@ -103,6 +130,8 @@
 import { getItem } from "@/utils/stroage.ts";
 import { isToday } from "@/utils/time.ts";
 import Record from "@/components/record.vue";
+import { setItem } from "@/utils/stroage";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "homeContainer",
   components: { Record },
@@ -110,8 +139,9 @@ export default {
   data() {
     return {
       show: false,
-      eye: false,
       noteList: [],
+      numberShow: false,
+      budget: undefined,
       monthTotal: {
         payTotal: 0,
         inTotal: 0,
@@ -123,7 +153,11 @@ export default {
       },
     };
   },
-  computed: {},
+  computed: {
+    ...mapState({
+      eye: "eyeState",
+    }),
+  },
   watch: {},
   created() {},
   mounted() {
@@ -139,6 +173,7 @@ export default {
         budget: 0,
       }),
     };
+    this.budget = this.monthTotal.budget;
     this.todayTotal = {
       ...(getItem("todayTotal") || {
         payTotal: 0,
@@ -148,7 +183,19 @@ export default {
 
     console.log(this.noteList);
   },
-  methods: {},
+  methods: {
+    ...mapMutations({
+      setEyeState: "setEyeState",
+    }),
+    handleOk() {
+      this.monthTotal.budget = this.budget;
+      setItem("monthTotal", this.monthTotal);
+      this.numberShow = false;
+    },
+    handleCancel() {
+      this.numberShow = false;
+    },
+  },
 };
 </script>
 
@@ -187,11 +234,27 @@ export default {
     bottom: 20px;
     text-align: center;
     width: 100%;
+    /deep/.van-button--primary {
+      border: none;
+      padding: auto 20px;
+      font-weight: 600;
+    }
+    /deep/.van-button--round {
+      box-shadow: #777777 2px 3px 3px 0px;
+    }
   }
   .info-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
+    /deep/.van-button--primary {
+      border: none;
+      padding: auto 20px;
+      font-weight: 600;
+    }
+    /deep/.van-button--round {
+      box-shadow: #777777 2px 3px 3px 0px;
+    }
   }
 }
 /deep/.van-cell-group {
@@ -217,21 +280,34 @@ export default {
   // background-color: indianred;
   color: indianred;
 }
-/deep/.van-button--round {
-  box-shadow: #777777 2px 3px 3px 0px;
-}
+
 /deep/.van-button--default {
   border: none;
   color: #41b883;
   font-weight: 600;
 }
-/deep/.van-button--primary {
-  border: none;
-  padding: auto 20px;
-  font-weight: 600;
-}
+
 .sheet {
   padding: 20px;
   height: 150px;
+}
+/deep/.van-row {
+  .van-col--12:first-child .van-button {
+    float: left;
+    background-color: #fff;
+    border: 0;
+  }
+  .van-col--12:last-child .van-button {
+    background-color: #fff;
+    border: 0;
+    float: right;
+  }
+}
+/deep/.van-col--10 .van-button {
+  width: 100%;
+}
+.textLabel {
+  font-size: 14px;
+  padding: 16px;
 }
 </style>
