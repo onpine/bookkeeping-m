@@ -47,7 +47,11 @@
         </div>
       </van-cell>
       <van-cell>
-        <van-button icon="chart-trending-o" type="default" to="index" block
+        <van-button
+          icon="chart-trending-o"
+          type="default"
+          to="/billDetails"
+          block
           >查看图标分析</van-button
         >
       </van-cell>
@@ -91,13 +95,20 @@
           >
         </van-col>
         <van-col span="10" offset="2"
-          ><van-button round type="primary" @click="handleOk">确认</van-button>
+          ><van-button round type="primary" @click="handleBudgetOk"
+            >确认</van-button
+          >
         </van-col>
       </van-row>
     </van-popup>
     <!-- 今日记录的账目 -->
     <div class="today" style="padding-bottom: 80px">
-      <record v-for="(item, index) in noteList" :key="index" :item="item" />
+      <record
+        v-for="(item, index) in todayList"
+        :key="index"
+        :item="item"
+        @update-view="initData"
+      />
     </div>
     <!-- 操作按钮 -->
     <div class="write-btn">
@@ -143,7 +154,7 @@ export default {
   data() {
     return {
       show: false,
-      noteList: [],
+      todayList: [],
       numberShow: false,
       budget: undefined,
       monthTotal: {
@@ -165,37 +176,41 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    let getList = [...getItem("noteList")];
-    this.noteList = getList.filter((item) => {
-      return isToday(item.time);
-    });
-
-    this.monthTotal = {
-      ...(getItem("monthTotal") || {
-        payTotal: 0,
-        inTotal: 0,
-        budget: 0,
-      }),
-    };
-    this.budget = this.monthTotal.budget;
-    let todayT = getItem("todayTotal");
-    this.todayTotal = {
-      ...(todayT && isToday(todayT.time)
-        ? todayT
-        : "" || {
-            payTotal: 0,
-            inTotal: 0,
-            time: getFormat1(new Date()),
-          }),
-    };
-
-    console.log(this.noteList);
+    this.initData();
   },
   methods: {
     ...mapMutations({
       setEyeState: "setEyeState",
     }),
-    handleOk() {
+    initData() {
+      let noteList = [...getItem("noteList")];
+      this.todayList = noteList.filter((item) => {
+        return isToday(item.time);
+      });
+
+      this.monthTotal = {
+        ...(getItem("monthTotal") || {
+          payTotal: 0,
+          inTotal: 0,
+          budget: 0,
+          time: getFormat1(new Date()),
+        }),
+      };
+      this.budget = this.monthTotal.budget;
+      let todayT = getItem("todayTotal");
+      this.todayTotal = {
+        ...(todayT && isToday(todayT.time)
+          ? todayT
+          : "" || {
+              payTotal: 0,
+              inTotal: 0,
+              time: getFormat1(new Date()),
+            }),
+      };
+
+      console.log(this.todayList);
+    },
+    handleBudgetOk() {
       this.monthTotal.budget = this.budget;
       setItem("monthTotal", this.monthTotal);
       this.numberShow = false;

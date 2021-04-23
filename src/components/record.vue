@@ -2,7 +2,7 @@
   <div class="record-container">
     <van-swipe-cell class="cord-cell">
       <div>
-        <van-row class="cord-row">
+        <van-row class="cord-row" @click="handleDetail">
           <van-col span="3">
             <van-icon
               class-prefix="icon"
@@ -29,7 +29,12 @@
         </van-row>
       </div>
       <template #right>
-        <van-button square type="danger" text="删除" />
+        <van-button
+          square
+          type="danger"
+          text="删除"
+          @click="handleDelete(item)"
+        />
         <van-button square type="primary" text="编辑" />
       </template>
     </van-swipe-cell>
@@ -38,6 +43,8 @@
 
 <script>
 import { inCategory, payCategory } from "@/utils/Category.json";
+import { getItem, setItem } from "@/utils/stroage.ts";
+import { isMonth, isToday } from "@/utils/time";
 export default {
   name: "recordContainer",
   components: {},
@@ -48,13 +55,56 @@ export default {
     return {
       inCategory,
       payCategory,
+      noteLists: [],
     };
   },
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.noteLists = [...getItem("noteList")];
+  },
+  methods: {
+    handleDetail() {
+      this.$router.push({
+        name: "detail",
+        params: {
+          ...this.item,
+        },
+      });
+    },
+    handleDelete(element) {
+      // 删除账目记录
+      let newList = this.noteLists.filter((item) => {
+        if (item.stamp != element.stamp) {
+          return item;
+        }
+      });
+      setItem("noteList", newList);
+      // 检查是否影响本月和今日
+      if (isMonth(element.time)) {
+        // 更新本月汇总
+        let monthTotal = { ...getItem("monthTotal") };
+        if (element.type) {
+          monthTotal.inTotal -= parseFloat(element.amount);
+        } else {
+          monthTotal.payTotal -= parseFloat(element.amount);
+        }
+        setItem("monthTotal", monthTotal);
+        // 检查是否影响今日
+        if (isToday(element.time)) {
+          let todayTotal = { ...getItem("todayTotal") };
+          if (element.type) {
+            todayTotal.inTotal -= parseFloat(element.amount);
+          } else {
+            todayTotal.payTotal -= parseFloat(element.amount);
+          }
+          setItem("todayTotal", todayTotal);
+        }
+        this.$emit("update-view");
+      }
+    },
+  },
 };
 </script>
 

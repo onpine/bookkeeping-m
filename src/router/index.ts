@@ -8,6 +8,7 @@ import Setting from '@/views/setting.vue'
 import About from '@/views/about.vue'
 import Records from '@/views/records.vue'
 import BillDetails from '@/views/billDetails.vue'
+import Detail from '@/views/detail.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,12 @@ const routes: Array<RouteConfig> = [
     path: '/billDetails',
     name: 'billDetails',
     component: BillDetails
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: Detail,
+    props: true
   }
 ]
 
