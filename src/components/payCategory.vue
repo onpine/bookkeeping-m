@@ -169,21 +169,27 @@ export default {
 
       let monthTotal = {
         payTotal: 0,
+        payNum: 0,
         inTotal: 0,
+        inNum: 0,
         budget: 0,
+        time: getFormat1(new Date()),
       };
       let todayTotal = {
         payTotal: 0,
         inTotal: 0,
+        time: getFormat1(new Date()),
       };
       noteList.forEach((element) => {
         if (isMonth(element.time)) {
           if (element.type) {
+            monthTotal.inNum += 1;
             monthTotal.inTotal += parseInt(element.amount);
             if (isToday(element.time)) {
               todayTotal.inTotal += parseInt(element.amount);
             }
           } else {
+            monthTotal.payNum += 1;
             monthTotal.payTotal += parseInt(element.amount);
             if (isToday(element.time)) {
               todayTotal.payTotal += parseInt(element.amount);

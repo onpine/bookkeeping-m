@@ -99,6 +99,7 @@
     <div class="today" style="padding-bottom: 80px">
       <record v-for="(item, index) in noteList" :key="index" :item="item" />
     </div>
+    <!-- 操作按钮 -->
     <div class="write-btn">
       <van-button to="/note" round type="primary" icon="edit"
         >记一笔...</van-button
@@ -119,7 +120,11 @@
           <van-grid-item icon="info-o" text="关于" to="/about" />
           <van-grid-item icon="setting-o" text="设置" to="/setting" />
           <van-grid-item icon="bars" text="账单记录" to="/records" />
-          <van-grid-item icon="chart-trending-o" text="账单详情" to="/" />
+          <van-grid-item
+            icon="chart-trending-o"
+            text="账单详情"
+            to="/billDetails"
+          />
         </van-grid>
       </div>
     </van-action-sheet>
@@ -127,11 +132,10 @@
 </template>
 
 <script>
-import { getItem } from "@/utils/stroage.ts";
-import { isToday } from "@/utils/time.ts";
+import { getItem, setItem } from "@/utils/stroage.ts";
 import Record from "@/components/record.vue";
-import { setItem } from "@/utils/stroage";
 import { mapState, mapMutations } from "vuex";
+import { getFormat1, isToday } from "@/utils/time";
 export default {
   name: "homeContainer",
   components: { Record },
@@ -174,11 +178,15 @@ export default {
       }),
     };
     this.budget = this.monthTotal.budget;
+    let todayT = getItem("todayTotal");
     this.todayTotal = {
-      ...(getItem("todayTotal") || {
-        payTotal: 0,
-        inTotal: 0,
-      }),
+      ...(todayT && isToday(todayT.time)
+        ? todayT
+        : "" || {
+            payTotal: 0,
+            inTotal: 0,
+            time: getFormat1(new Date()),
+          }),
     };
 
     console.log(this.noteList);

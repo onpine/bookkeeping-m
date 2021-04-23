@@ -102,9 +102,8 @@
 
 <script>
 import { inCategory } from "@/utils/Category.json";
-import { getFormat1 } from "@/utils/time.ts";
 import { getItem, setItem } from "@/utils/stroage.ts";
-import { isMonth, isToday } from "@/utils/time.ts";
+import { isMonth, isToday, getFormat1 } from "@/utils/time.ts";
 export default {
   name: "inCategoryContainer",
   components: {},
@@ -150,6 +149,10 @@ export default {
       let noteList = getItem("noteList") || [];
       let monthList = getItem("monthList") || [];
       console.log(noteList);
+      if (this.amount == "") {
+        alert("输入金额");
+        return;
+      }
       noteList.push({
         type: 1,
         amount: this.amount,
@@ -161,21 +164,27 @@ export default {
 
       let monthTotal = {
         payTotal: 0,
+        payNum: 0,
         inTotal: 0,
+        inNum: 0,
         budget: 0,
+        time: getFormat1(new Date()),
       };
       let todayTotal = {
         payTotal: 0,
         inTotal: 0,
+        time: getFormat1(new Date()),
       };
       noteList.forEach((element) => {
         if (isMonth(element.time)) {
           if (element.type) {
+            monthTotal.inNum += 1;
             monthTotal.inTotal += parseInt(element.amount);
             if (isToday(element.time)) {
               todayTotal.inTotal += parseInt(element.amount);
             }
           } else {
+            monthTotal.payNum += 1;
             monthTotal.payTotal += parseInt(element.amount);
             if (isToday(element.time)) {
               todayTotal.payTotal += parseInt(element.amount);

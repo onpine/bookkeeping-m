@@ -2,57 +2,70 @@
   "payCategory": [
     {
       "icon": "31chiping",
-      "name": "其他"
+      "name": "其他",
+      "value": 0
     },
     {
       "icon": "chifan2600",
-      "name": "餐饮"
+      "name": "餐饮",
+      "value": 0
     },
     {
       "icon": "gouwujianying",
-      "name": "购物"
+      "name": "购物",
+      "value": 0
     },
     {
       "icon": "chuzu",
-      "name": "交通"
+      "name": "交通",
+      "value": 0
     },
     {
       "icon": "fushi",
-      "name": "服饰"
+      "name": "服饰",
+      "value": 0
     },
     {
       "icon": "jiaoyu",
-      "name": "教育"
+      "name": "教育",
+      "value": 0
     },
     {
       "icon": "yiliao",
-      "name": "医疗"
+      "name": "医疗",
+      "value": 0
     },
     {
       "icon": "tongxun",
-      "name": "通讯"
+      "name": "通讯",
+      "value": 0
     },
     {
       "icon": "liwu",
-      "name": "礼物"
+      "name": "礼物",
+      "value": 0
     }
   ],
   "inCategory": [
     {
       "icon": "31chiping",
-      "name": "其他"
+      "name": "其他",
+      "value": 0
     },
     {
       "icon": "xinzi",
-      "name": "薪资"
+      "name": "薪资",
+      "value": 0
     },
     {
       "icon": "touzi",
-      "name": "投资"
+      "name": "投资",
+      "value": 0
     },
     {
       "icon": "liwu",
-      "name": "赠送"
+      "name": "赠送",
+      "value": 0
     }
   ]
 }
