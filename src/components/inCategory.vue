@@ -159,6 +159,7 @@ export default {
         category: this.selected,
         message: this.message,
         time: this.time,
+        stamp: Date.now(),
       });
       setItem("noteList", noteList);
 
@@ -167,7 +168,7 @@ export default {
         payNum: 0,
         inTotal: 0,
         inNum: 0,
-        budget: 0,
+        budget: getItem("monthTotal").budget || 0,
         time: getFormat1(new Date()),
       };
       let todayTotal = {
