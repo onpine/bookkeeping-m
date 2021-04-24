@@ -88,7 +88,12 @@
       </div>
     </div>
     <div class="recards">
-      <record v-for="(item, index) in recordsList" :key="index" :item="item" />
+      <record
+        v-for="(item, index) in recordsList"
+        :key="index"
+        :item="item"
+        @update-view="initData"
+      />
     </div>
   </div>
 </template>
@@ -142,12 +147,12 @@ export default {
   watch: {},
   created() {},
   mounted() {
-    this.initDate();
+    this.initData();
   },
   methods: {
-    initDate() {
-      // this.year = this.currentDate.getFullYear();
-      // this.month = this.currentDate.getMonth() + 1;
+    initData() {
+      this.inPieData = inCategory;
+      this.payPieData = payCategory;
       this.Total = {
         ...{ payTotal: 0, payNum: 0, inTotal: 0, inNum: 0, budget: 0 },
       };
@@ -223,7 +228,7 @@ export default {
       this.currentYear = value;
       this.currentIndex = index;
       this.show = false;
-      this.initDate();
+      this.initData();
     },
   },
 };
