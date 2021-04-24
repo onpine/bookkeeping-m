@@ -14,17 +14,20 @@ export default {
   components: {},
   props: {
     pieData: {
-      type: Array,
+      type: String,
       require: true,
     },
   },
   data() {
-    return {};
+    return {
+      data: undefined,
+    };
   },
   computed: {},
   watch: {
     pieData(newValue, oldValue) {
       // console.log(newValue);
+      this.data = JSON.parse(newValue);
       this.draw();
     },
   },
@@ -57,7 +60,7 @@ export default {
             name: "分类统计",
             type: "pie",
             radius: "50%",
-            data: this.pieData,
+            data: this.data,
             label: {
               formatter: "{b}:￥{c} ({d}%)",
             },
