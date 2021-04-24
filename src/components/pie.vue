@@ -44,7 +44,9 @@ export default {
           left: "center",
         },
         tooltip: {
+          triggerOn: "mousemove|click",
           trigger: "item",
+          formatter: "{b}: ￥{c}<br />{d}%",
         },
         // legend: {
         //   orient: "vertical",
@@ -56,6 +58,9 @@ export default {
             type: "pie",
             radius: "50%",
             data: this.pieData,
+            label: {
+              formatter: "{b}:￥{c} ({d}%)",
+            },
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
