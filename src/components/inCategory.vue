@@ -121,7 +121,7 @@ export default {
       textShow: false,
       timeShow: false,
       minDate: new Date(2020, 0, 1),
-      maxDate: new Date(2025, 10, 1),
+      maxDate: new Date(),
       currentDate: new Date(),
     };
   },
