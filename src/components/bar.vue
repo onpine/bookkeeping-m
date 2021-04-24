@@ -83,10 +83,17 @@ export default {
         ],
         series: [
           {
-            name: "支出",
+            name: "每日金额",
             type: "bar",
             barWidth: "60%",
             data: this.data.yData,
+            itemStyle: {
+              borderRadius: [30, 30, 30, 30],
+            },
+            markPoint: {
+              data: [{ type: "max", name: "最大值" }],
+              symbol: "pin",
+            },
           },
         ],
       };

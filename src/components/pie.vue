@@ -54,7 +54,7 @@ export default {
         // },
         series: [
           {
-            name: "访问来源",
+            name: "分类统计",
             type: "pie",
             radius: "50%",
             data: this.pieData,
