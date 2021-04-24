@@ -3,18 +3,20 @@
     <van-swipe-cell class="cord-cell">
       <div>
         <van-row class="cord-row" @click="handleDetail">
-          <van-col span="3">
-            <van-icon
-              class-prefix="icon"
-              :color="item.type ? '#41b883' : 'indianred'"
-              :name="
-                item.type
-                  ? inCategory[item.category].icon
-                  : payCategory[item.category].icon
-              "
-            ></van-icon>
+          <van-col span="4">
+            <div :class="item.type ? 'type-icon1' : 'type-icon2'">
+              <van-icon
+                class-prefix="icon"
+                color="#fff"
+                :name="
+                  item.type
+                    ? inCategory[item.category].icon
+                    : payCategory[item.category].icon
+                "
+              ></van-icon>
+            </div>
           </van-col>
-          <van-col span="5" offset=""
+          <van-col span="4" offset=""
             ><span class="type-name">{{
               item.type
                 ? inCategory[item.category].name
@@ -123,15 +125,27 @@ export default {
     background-color: #fff;
     border-radius: 32px 0 0 32px;
     // border-right: 2px solid #ccc;
+    /deep/.van-col--4 {
+      .icon {
+        line-height: 45px;
+        font-size: 20px;
+      }
+      .type-icon1 {
+        width: 45px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #41b883;
+      }
+      .type-icon2 {
+        width: 45px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: indianred;
+      }
+    }
     /deep/.van-col {
       height: 65px;
       padding: 10px 0;
-      .icon {
-        line-height: 45px;
-        width: 100%;
-        // text-align: center;
-        font-size: 30px;
-      }
       .type-name {
         display: block;
         height: 45px;
