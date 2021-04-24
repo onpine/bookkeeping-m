@@ -50,7 +50,7 @@
         <van-button
           icon="chart-trending-o"
           type="default"
-          to="/billDetails"
+          to="/monthDetails"
           block
           >查看图标分析</van-button
         >
@@ -134,7 +134,7 @@
           <van-grid-item
             icon="chart-trending-o"
             text="账单详情"
-            to="/billDetails"
+            to="/monthDetails"
           />
         </van-grid>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="bill-details">
+  <div class="month-details">
     <van-nav-bar
       class="nav-wrap"
       title="账单详情"
@@ -98,7 +98,7 @@ import { getItem } from "@/utils/stroage.ts";
 import { getFormat, isMonth, getDays } from "@/utils/time";
 import { payCategory, inCategory } from "@/utils/Category.json";
 export default {
-  name: "billDetails",
+  name: "monthDetails",
   components: { Bar, Pie, Record },
   props: {},
   data() {
@@ -243,7 +243,7 @@ export default {
   font-weight: 600;
   color: #41b883;
 }
-.bill-details {
+.month-details {
   min-height: 100vh;
   background-color: #eee;
   .total {

@@ -7,7 +7,7 @@ import Note from '@/views/note.vue'
 import Setting from '@/views/setting.vue'
 import About from '@/views/about.vue'
 import Records from '@/views/records.vue'
-import BillDetails from '@/views/billDetails.vue'
+import MonthDetails from '@/views/monthDetails.vue'
 import Detail from '@/views/detail.vue'
 
 Vue.use(VueRouter)
@@ -49,9 +49,9 @@ const routes: Array<RouteConfig> = [
     component: Records
   },
   {
-    path: '/billDetails',
-    name: 'billDetails',
-    component: BillDetails
+    path: '/monthDetails',
+    name: 'monthDetails',
+    component: MonthDetails
   },
   {
     path: '/detail',
