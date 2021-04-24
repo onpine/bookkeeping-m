@@ -86,7 +86,11 @@
         />
       </div>
       <div class="pie">
-        <pie :pieData="type == 0 ? payPieData : inPieData" />
+        <pie
+          :pieData="
+            type == 0 ? JSON.stringify(payPieData) : JSON.stringify(inPieData)
+          "
+        />
       </div>
     </div>
     <div class="recards">
@@ -142,8 +146,8 @@ export default {
         yData: [],
       },
       // 饼状图
-      inPieData: inCategory,
-      payPieData: payCategory,
+      inPieData: undefined,
+      payPieData: undefined,
     };
   },
   computed: {},
@@ -154,41 +158,44 @@ export default {
   },
   methods: {
     initData() {
-      this.inPieData = inCategory;
-      this.payPieData = payCategory;
+      // inCategory、payCategory深拷贝
+      this.inPieData = [...JSON.parse(JSON.stringify(inCategory))];
+      this.payPieData = [...JSON.parse(JSON.stringify(payCategory))];
       this.year = this.currentDate.getFullYear();
       this.month = this.currentDate.getMonth() + 1;
       this.Total = {
         ...{ payTotal: 0, payNum: 0, inTotal: 0, inNum: 0, budget: 0 },
       };
       this.noteList = [...getItem("noteList")];
-      this.payList = this.noteList.filter((item, index) => {
-        if (item.type == 0 && isMonth(item.time, this.currentDate)) {
-          this.Total.payNum += 1;
-          this.Total.payTotal += parseFloat(item.amount);
-          return item;
-        }
-      });
-      this.inList = this.noteList.filter((item, index) => {
-        if (item.type == 1 && isMonth(item.time, this.currentDate)) {
-          this.Total.inNum += 1;
-          this.Total.inTotal += parseFloat(item.amount);
-          return item;
-        }
-      });
+      this.payList = [
+        ...this.noteList.filter((item, index) => {
+          if (item.type == 0 && isMonth(item.time, this.currentDate)) {
+            this.Total.payNum += 1;
+            this.Total.payTotal += parseFloat(item.amount);
+            return item;
+          }
+        }),
+      ];
+      this.inList = [
+        ...this.noteList.filter((item, index) => {
+          if (item.type == 1 && isMonth(item.time, this.currentDate)) {
+            this.Total.inNum += 1;
+            this.Total.inTotal += parseFloat(item.amount);
+            return item;
+          }
+        }),
+      ];
       this.recordsList = [...this.payList];
       // 柱状图数据
       let days = getDays(this.year, this.month, 0);
-      this.payBarData.xData = Array.from(
-        Array(days),
-        (item, index) => index + 1
-      );
-      this.payBarData.yData = new Array(days).fill(0);
-      this.inBarData.xData = Array.from(
-        Array(days),
-        (item, index) => index + 1
-      );
-      this.inBarData.yData = new Array(days).fill(0);
+      this.payBarData.xData = [
+        ...Array.from(Array(days), (item, index) => index + 1),
+      ];
+      this.payBarData.yData = [...new Array(days).fill(0)];
+      this.inBarData.xData = [
+        ...Array.from(Array(days), (item, index) => index + 1),
+      ];
+      this.inBarData.yData = [...new Array(days).fill(0)];
       this.payList.forEach((item, index) => {
         let day = getFormat(item.time, "YYYY年MM月DD日 HH:mm").$D;
         this.payBarData.yData[day - 1] += parseFloat(item.amount);
