@@ -9,6 +9,7 @@ import About from '@/views/about.vue'
 import Records from '@/views/records.vue'
 import MonthDetails from '@/views/monthDetails.vue'
 import Detail from '@/views/detail.vue'
+import YearDetails from '@/views/yearDetails.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,11 @@ const routes: Array<RouteConfig> = [
     path: '/monthDetails',
     name: 'monthDetails',
     component: MonthDetails
+  },
+  {
+    path: '/yearDetails',
+    name: 'yearDetails',
+    component: YearDetails
   },
   {
     path: '/detail',
