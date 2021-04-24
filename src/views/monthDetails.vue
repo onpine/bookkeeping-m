@@ -68,7 +68,12 @@
           ></van-col
         >
         <van-col span="6" offset="2"
-          ><van-button type="default" plain icon="exchange" size="mini"
+          ><van-button
+            type="default"
+            plain
+            icon="exchange"
+            size="mini"
+            to="/yearDetails"
             >查看年账单</van-button
           ></van-col
         >
@@ -120,7 +125,7 @@ export default {
       type: 0,
       // 时间选择
       minDate: new Date(2020, 0, 1),
-      maxDate: new Date(2025, 10, 1),
+      maxDate: new Date(),
       currentDate: new Date(),
       // 柱状图
       inBarData: {
