@@ -132,26 +132,29 @@ export default {
     padding: 0 10px;
     background-color: #fff;
     border-radius: 32px 0 0 32px;
-    // border-right: 2px solid #ccc;
     /deep/.van-col--4 {
       .icon {
         line-height: 45px;
+        display: block;
         font-size: 20px;
       }
       .type-icon1 {
         width: 45px;
+        height: 45px;
         text-align: center;
         border-radius: 50%;
         background-color: #41b883;
       }
       .type-icon2 {
         width: 45px;
+        height: 45px;
         text-align: center;
         border-radius: 50%;
         background-color: indianred;
       }
     }
     /deep/.van-col {
+      box-sizing: border-box;
       height: 65px;
       padding: 10px 0;
       .type-name {
