@@ -106,7 +106,7 @@ export default {
           setItem("todayTotal", todayTotal);
         }
       }
-      this.$router.push("/");
+      this.$router.go(-1);
     },
   },
   // 组件内路由前置守卫
