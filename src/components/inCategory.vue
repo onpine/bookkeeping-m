@@ -180,15 +180,15 @@ export default {
         if (isMonth(element.time)) {
           if (element.type) {
             monthTotal.inNum += 1;
-            monthTotal.inTotal += parseInt(element.amount);
+            monthTotal.inTotal += parseFloat(element.amount);
             if (isToday(element.time)) {
-              todayTotal.inTotal += parseInt(element.amount);
+              todayTotal.inTotal += parseFloat(element.amount);
             }
           } else {
             monthTotal.payNum += 1;
-            monthTotal.payTotal += parseInt(element.amount);
+            monthTotal.payTotal += parseFloat(element.amount);
             if (isToday(element.time)) {
-              todayTotal.payTotal += parseInt(element.amount);
+              todayTotal.payTotal += parseFloat(element.amount);
             }
           }
         }
