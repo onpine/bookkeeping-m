@@ -10,6 +10,7 @@ import Records from '@/views/records.vue'
 import MonthDetails from '@/views/monthDetails.vue'
 import Detail from '@/views/detail.vue'
 import YearDetails from '@/views/yearDetails.vue'
+import Edit from '@/views/edit.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,12 @@ const routes: Array<RouteConfig> = [
     path: '/detail',
     name: 'detail',
     component: Detail,
+    props: true
+  },
+  {
+    path: '/edit',
+    name: 'edit',
+    component: Edit,
     props: true
   }
 ]

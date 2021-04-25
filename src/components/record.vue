@@ -37,7 +37,7 @@
           text="删除"
           @click="handleDelete(item)"
         />
-        <van-button square type="primary" text="编辑" />
+        <van-button square type="primary" text="编辑" @click="handleEdit" />
       </template>
     </van-swipe-cell>
   </div>
@@ -105,6 +105,14 @@ export default {
         }
         this.$emit("update-view");
       }
+    },
+    handleEdit() {
+      this.$router.push({
+        name: "edit",
+        params: {
+          ...this.item,
+        },
+      });
     },
   },
 };

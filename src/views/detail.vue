@@ -46,7 +46,7 @@
       </van-cell-group>
     </div>
     <div class="edit">
-      <van-button plain>修改</van-button>
+      <van-button plain @click="handleEdit">修改</van-button>
     </div>
   </div>
 </template>
@@ -64,18 +64,18 @@ export default {
       data: this.$route.params,
       inCategory,
       payCategory,
-      noteList: [],
+      noteList: undefined,
     };
   },
   computed: {},
   watch: {},
-  created() {},
-  mounted() {
+  created() {
     this.noteList = [...getItem("noteList")];
   },
+  mounted() {},
   methods: {
     onClickLeft() {
-      this.$router.push({ path: "/" });
+      this.$router.go(-1);
     },
     handleDelete() {
       // 删除账目记录
@@ -107,6 +107,14 @@ export default {
         }
       }
       this.$router.go(-1);
+    },
+    handleEdit() {
+      this.$router.push({
+        name: "edit",
+        params: {
+          ...this.data,
+        },
+      });
     },
   },
   // 组件内路由前置守卫
