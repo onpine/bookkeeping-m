@@ -304,5 +304,8 @@ export default {
       }
     }
   }
+  .recards {
+    padding-bottom: 10px;
+  }
 }
 </style>
