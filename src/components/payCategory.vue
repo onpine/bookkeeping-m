@@ -105,9 +105,8 @@
 
 <script>
 import { payCategory } from "@/utils/Category.json";
-import { getFormat1 } from "@/utils/time.ts";
 import { getItem, setItem } from "@/utils/stroage.ts";
-import { isMonth, isToday } from "@/utils/time.ts";
+import { isMonth, isToday, getFormat1 } from "@/utils/time.ts";
 export default {
   name: "payCategoryContainer",
   components: {},
