@@ -174,16 +174,17 @@ export default {
     }),
   },
   watch: {},
-  created() {},
-  mounted() {
+  created() {
     this.initData();
   },
+  mounted() {},
   methods: {
     ...mapMutations({
       setEyeState: "setEyeState",
     }),
     initData() {
-      let noteList = [...getItem("noteList")];
+      let noteList = getItem("noteList");
+      if (!noteList) return;
       this.todayList = noteList.filter((item) => {
         return isToday(item.time);
       });

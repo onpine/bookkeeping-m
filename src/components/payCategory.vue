@@ -172,7 +172,7 @@ export default {
         payNum: 0,
         inTotal: 0,
         inNum: 0,
-        budget: getItem("monthTotal").budget || 0,
+        budget: getItem("monthTotal") ? getItem("monthTotal").budget || 0 : 0,
         time: getFormat1(new Date()),
       };
       let todayTotal = {
