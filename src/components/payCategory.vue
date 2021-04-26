@@ -104,6 +104,7 @@
 </template>
 
 <script>
+import { Toast } from "vant";
 import { payCategory } from "@/utils/Category.json";
 import { getItem, setItem } from "@/utils/stroage.ts";
 import { isMonth, isToday, getFormat1 } from "@/utils/time.ts";
@@ -152,9 +153,8 @@ export default {
     handleSubmit() {
       let noteList = getItem("noteList") || [];
       let monthList = getItem("monthList") || [];
-      console.log(noteList);
       if (this.amount == "") {
-        alert("输入金额");
+        Toast.fail("输入金额");
         return;
       }
       noteList.push({
