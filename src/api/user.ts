@@ -8,10 +8,10 @@ export const login = (data: any) => {
     data
   })
 };
-export const rigister = (data: any) => {
+export const register = (data: any) => {
   return request({
     method: "POST",
-    url: "/rigister",
+    url: "/register",
     // data用来设置POST请求体
     data
   })

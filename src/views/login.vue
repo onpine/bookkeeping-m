@@ -3,8 +3,8 @@
     <van-nav-bar title="登录" left-arrow @click-left="onClickLeft" />
     <van-form @submit="onSubmit">
       <van-field
-        v-model="username"
-        name="username"
+        v-model="uid"
+        name="uid"
         label="用户名"
         placeholder="用户名"
         :rules="[{ required: true, message: '请填写用户名' }]"
@@ -30,7 +30,7 @@
         block
         type="info"
         native-type="submit"
-        to="rigister"
+        to="register"
         >没有账号？去注册</van-button
       >
     </div>
@@ -40,14 +40,14 @@
 <script>
 import { Toast } from "vant";
 import { login } from "@/api/user";
-import { setItem } from "@/utils/stroage.ts";
+import { mapMutations } from "vuex";
 export default {
   name: "loginContainer",
   components: {},
   props: {},
   data() {
     return {
-      username: "123456",
+      uid: "15893680482",
       password: "123456",
     };
   },
@@ -56,6 +56,10 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    ...mapMutations({
+      setUserState: "setUserState",
+      setTokenState: "setTokenState",
+    }),
     async onSubmit(values) {
       const toast = Toast.loading({
         message: "加载中...",
@@ -64,9 +68,18 @@ export default {
       try {
         let result = await login(values);
         console.log(result);
-        setItem("token", result.data.token);
+        this.setUserState(result.data.data);
+        this.setTokenState(result.data.token);
         toast.clear();
+        Toast.success({
+          message: "注册成功",
+        });
+        this.$router.back(-1);
       } catch (error) {
+        toast.clear();
+        Toast.fail({
+          message: "注册失败",
+        });
         console.log(error);
       }
     },

@@ -66,7 +66,7 @@
 
 <script>
 import { Toast } from "vant";
-import { rigister } from "@/api/user";
+import { register } from "@/api/user";
 export default {
   name: "rigisterContainer",
   components: {},
@@ -94,8 +94,11 @@ export default {
         password: this.password1,
       };
       try {
-        let result = await rigister(user);
+        let result = await register(user);
         console.log(result);
+        if (result.status == 200) {
+          this.$router.push({ path: "/login" });
+        }
       } catch (error) {
         console.log(error);
       }
