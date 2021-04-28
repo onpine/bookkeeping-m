@@ -8,6 +8,7 @@ export const login = (data: any) => {
     data
   })
 };
+
 export const register = (data: any) => {
   return request({
     method: "POST",
@@ -16,3 +17,18 @@ export const register = (data: any) => {
     data
   })
 };
+
+export const backups = (data: any) => {
+  return request({
+    method: 'POST',
+    url: '/backups',
+    data
+  })
+}
+
+export const pull = () => {
+  return request({
+    method: 'POST',
+    url: '/pull',
+  })
+}

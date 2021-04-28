@@ -72,13 +72,13 @@ export default {
         this.setTokenState(result.data.token);
         toast.clear();
         Toast.success({
-          message: "注册成功",
+          message: "登录成功",
         });
-        this.$router.back(-1);
+        this.$router.push({ path: "/setting" });
       } catch (error) {
         toast.clear();
         Toast.fail({
-          message: "注册失败",
+          message: "登录失败",
         });
         console.log(error);
       }

@@ -10,35 +10,50 @@
         <van-icon name="arrow-left" size="18" />
       </template>
     </van-nav-bar>
-    <van-cell-group class="cell-wrap" @click="handleUser">
-      <van-cell class="user-wrap">
-        <template>
-          <div class="user-title">
-            <van-icon name="manager" />
-            <span>用户</span>
-          </div>
-          <span>{{ token ? userInfo.uid : "未登录！点击登录" }}</span>
-        </template>
-      </van-cell>
+    <van-cell-group class="cell-wrap">
+      <button>
+        <van-cell class="user-wrap" @click="handleUser">
+          <template>
+            <div class="user-title">
+              <van-icon name="manager" />
+              <span>用户</span>
+            </div>
+            <span>{{ token ? userInfo.uid : "未登录！点击登录" }}</span>
+          </template>
+        </van-cell>
+      </button>
     </van-cell-group>
     <van-cell-group class="cell-wrap">
-      <van-cell title="备份数据">
-        <template #label>
-          <span>备份账单数据</span>
-        </template>
-      </van-cell>
-      <van-cell title="导出CSV">
-        <template #label>
-          <span>将账单数据导出到CSV</span>
-        </template>
-      </van-cell>
+      <button>
+        <van-cell title="备份数据" @click="handleBackups">
+          <template #label>
+            <span>备份账单数据</span>
+          </template>
+        </van-cell>
+      </button>
+      <button>
+        <van-cell title="同步数据" @click="handlePull">
+          <template #label>
+            <span>同步账单数据</span>
+          </template>
+        </van-cell>
+      </button>
+      <button>
+        <van-cell title="导出Excel">
+          <template #label>
+            <span>将账单数据导出到Excel</span>
+          </template>
+        </van-cell>
+      </button>
     </van-cell-group>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import { Dialog } from "vant";
+import { Dialog, Toast } from "vant";
+import { backups, pull } from "@/api/user.ts";
+import { getItem, setItem, initTotal } from "@/utils/stroage.ts";
 export default {
   name: "settingContainer",
   components: {},
@@ -79,6 +94,84 @@ export default {
           });
       }
     },
+    async handleBackups() {
+      try {
+        await this.handlePull();
+      } catch (error) {
+        return;
+      }
+      if (this.token) {
+        // 已登录
+        const toast = Toast.loading({
+          message: "加载中...",
+          forbidClick: true,
+        });
+        try {
+          let noteList = getItem("noteList") || "";
+          let result = await backups(noteList);
+          toast.clear();
+          if (result.data.status == 200) {
+            Toast.success("备份成功");
+          } else {
+            Toast.fail("备份失败，稍后再试");
+          }
+        } catch (error) {
+          toast.clear();
+          Toast.fail("备份失败，稍后再试");
+          console.log(error);
+        }
+      } else {
+        // 未登录
+        Dialog.alert({
+          message: "还未登录！去登录",
+        }).then(() => {
+          this.$router.push({ path: "/login" });
+        });
+      }
+    },
+    async handlePull() {
+      if (this.token) {
+        // 已登录
+        const toast = Toast.loading({
+          message: "加载中...",
+          forbidClick: true,
+        });
+        try {
+          let noteList = getItem("noteList") || "";
+          let result = await pull();
+          let pullNoteList = result.data.data.noteList;
+          pullNoteList = [...pullNoteList, ...noteList];
+          // 对象数组去重
+          let map = new Map();
+          for (let item of pullNoteList) {
+            if (!map.has(item.stamp)) {
+              map.set(item.stamp, item);
+            }
+          }
+          console.log([...map.values()]);
+          setItem("noteList", [...map.values()]);
+          // 计算本月和今日统计
+          initTotal();
+          toast.clear();
+          if (result.data.status == 200) {
+            Toast.success("同步成功");
+          } else {
+            Toast.fail("同步失败，稍后再试");
+          }
+        } catch (error) {
+          toast.clear();
+          Toast.fail("同步失败，稍后再试");
+          console.log(error);
+        }
+      } else {
+        // 未登录
+        Dialog.alert({
+          message: "还未登录！去登录",
+        }).then(() => {
+          this.$router.push({ path: "/login" });
+        });
+      }
+    },
   },
 };
 </script>
@@ -99,6 +192,17 @@ export default {
   }
   .cell-wrap {
     margin: 10px 0;
+    button {
+      width: 100%;
+      text-align: inherit;
+      padding: 0;
+      border: 0;
+    }
+    button:active {
+      /deep/.van-cell {
+        background-color: #eee;
+      }
+    }
     .user-wrap {
       /deep/.van-cell__value {
         height: 45px;

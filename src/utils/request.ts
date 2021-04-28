@@ -10,11 +10,11 @@ request.interceptors.request.use(
   // config 时当前请求相关的配置信息对象
   // config 是可以修改的
   function (config: any) {
-    // const token = window.localStorage.getItem('token')
+    const token = window.localStorage.getItem('token')
     // 如果又有用户登录信息，则统一设置token
-    // if (token) {
-    //   config.headers.Authorization = token
-    // }
+    if (token) {
+      config.headers.Authorization = token
+    }
 
     // 当这里 return config 之后请求才会真正的发出去
     return config
