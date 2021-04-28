@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getItem, setItem } from '@/utils/stroage'
+import { getItem, setItem, removeItem } from '@/utils/stroage'
 
 Vue.use(Vuex)
 
@@ -15,9 +15,9 @@ export default new Vuex.Store({
       state.eyeState = value
       setItem('eyeState', value)
     },
-    setTokenState(state, value) {
-      state.token = value
-      setItem('token', value)
+    clearTokenState(state) {
+      state.token = undefined
+      removeItem('token')
     },
     setUserState(state, value) {
       state.user = { ...value }

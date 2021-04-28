@@ -73,7 +73,7 @@ export default {
   methods: {
     ...mapMutations({
       setUserState: "setUserState",
-      setTokenState: "setTokenState",
+      clearTokenState: "clearTokenState",
     }),
     onClickLeft() {
       this.$router.push({ path: "/" });
@@ -86,7 +86,7 @@ export default {
           message: "确认退出登录？",
         })
           .then(() => {
-            this.setTokenState(undefined);
+            this.clearTokenState();
             this.setUserState({ uid: "" });
           })
           .catch(() => {
