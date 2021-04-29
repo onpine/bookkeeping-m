@@ -39,9 +39,9 @@
         </van-cell>
       </button>
       <button>
-        <van-cell title="导出Excel">
+        <van-cell title="导出CSV" @click="handleCSV">
           <template #label>
-            <span>将账单数据导出到Excel</span>
+            <span>将账单数据导出到CSV</span>
           </template>
         </van-cell>
       </button>
@@ -54,6 +54,7 @@ import { mapState, mapMutations } from "vuex";
 import { Dialog, Toast } from "vant";
 import { backups, pull } from "@/api/user.ts";
 import { getItem, setItem, initTotal } from "@/utils/stroage.ts";
+import { exportCSV } from "@/utils/csv.ts";
 export default {
   name: "settingContainer",
   components: {},
@@ -94,6 +95,7 @@ export default {
           });
       }
     },
+    // 备份
     async handleBackups() {
       try {
         await this.handlePull();
@@ -129,6 +131,7 @@ export default {
         });
       }
     },
+    // 同步
     async handlePull() {
       if (this.token) {
         // 已登录
@@ -171,6 +174,25 @@ export default {
           this.$router.push({ path: "/login" });
         });
       }
+    },
+    // 导出CSV
+    async handleCSV() {
+      var link = undefined;
+      var noteList = undefined;
+      if (this.token) {
+        try {
+          await this.handlePull();
+          noteList = getItem("noteList") || "";
+        } catch (error) {
+          noteList = getItem("noteList") || "";
+        }
+      } else {
+        noteList = getItem("noteList") || "";
+      }
+      link = exportCSV(noteList);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
 };
