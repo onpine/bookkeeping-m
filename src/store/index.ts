@@ -19,6 +19,10 @@ export default new Vuex.Store({
       state.token = undefined
       removeItem('token')
     },
+    setTokenState(state, value) {
+      state.token = value;
+      setItem('token', value)
+    },
     setUserState(state, value) {
       state.user = { ...value }
       setItem('user', value)
